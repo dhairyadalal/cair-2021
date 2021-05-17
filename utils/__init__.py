@@ -3,7 +3,7 @@ import pytrec_eval
 import spacy 
 from typing import List
 
-nlp = spacy.load('en', disable=["tagger", "ner", "parser"])
+nlp = spacy.load('en_core_web_sm', disable=["tagger", "ner", "parser"])
 
 def preprocess_query(text):
     cleaned_query = []
@@ -46,4 +46,5 @@ def extract_topics_from_file(file: str) -> dict:
         narr = topic.narr.text
         extracted_topics.append({"number": number, "title": title, "narrative": narr})
 
+    return extracted_topics
 
