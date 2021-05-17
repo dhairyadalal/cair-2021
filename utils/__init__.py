@@ -1,4 +1,17 @@
+from bs4 import BeautifulSoup
 import pytrec_eval
+import spacy 
+from typing import List
+
+nlp = spacy.load('en', disable=["tagger", "ner", "parser"])
+
+def preprocess_query(text):
+    cleaned_query = []
+    for tok in nlp(text):
+        tok = tok.lemma_.lower()
+        if tok.isalpha():
+            cleaned_query.append(tok)
+    return cleaned_query
 
 def read_qrel_from_file(file_path: str) -> dict:
     """ Method return json representation of qrel file """
@@ -21,6 +34,16 @@ def read_qrel_from_file(file_path: str) -> dict:
 
 def evaluate_run(run: dict, qrel: dict,  metrics: set = {'map', 'ndcg'}) -> dict:
     evaluator = pytrec_eval.RelevanceEvaluator(qrel, metrics)
-    return evaluator.evaluate(qrel)
+    return evaluator.evaluate(run)
+
+def extract_topics_from_file(file: str) -> dict:
+    soup = BeautifulSoup(open(file, "r"), 'xml')
+
+    extracted_topics = []
+    for topic in soup.find_all("top"):
+        number = str(topic.num.text)
+        title = topic.title.text
+        narr = topic.narr.text
+        extracted_topics.append({"number": number, "title": title, "narrative": narr})
 
 
