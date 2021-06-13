@@ -6,14 +6,16 @@ import pickle
 import swifter
 
 print("load data")
-df = pd.read_csv("data/parsed_docs.csv")
-df["text"] = df["text"].swifter.apply(lambda x: " ".join([k.strip() for k in x.split()]))
+df = pickle.load(open("data/parsed_docs_with_toks.pkl", "rb"))
+df = df.query("bd_news_flag != 1")
+
+print("df filt len", len(df))
 
 print("loading model")
 model = SentenceTransformer('msmarco-distilbert-base-v3')
 
 print("embedding")
-passage_embeddings = model.encode(df["text"].tolist(), show_progress_bar=True)
+passage_embeddings = model.encode(df["text_clean"].tolist(), show_progress_bar=True)
 
 print("dumping embeddings")
 pickle.dump(passage_embeddings, open("data/passages-msmarco-distilbert-base-v3-cleaned.pkl", "wb"))

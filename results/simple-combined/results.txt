@@ -1,0 +1,6 @@
+Num-results = 1000
+
+Aggregate results
+Average MAP:  0.5774989891215204
+Average P_5:  0.78
+Average NDCG:  0.8580313074222803

@@ -36,7 +36,7 @@ class SemanticIndex():
     def __init__(self, 
                  semantic_weights = "msmarco-distilbert-base-v3",
                  idx_dim=768,
-                 cache_loc="saved_indices/msmarco-distilbert-base-idx.ann"):
+                 cache_loc="saved_indices/msmarco-distilbert-base-idx-cleaned.ann"):
         self.model = SentenceTransformer(semantic_weights)
 
         self.idx = AnnoyIndex(idx_dim, "angular")
